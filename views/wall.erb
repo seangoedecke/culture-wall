@@ -1,0 +1,121 @@
+<html>
+	<head>
+		<title>Culture Wall</title>
+		<style>
+			body {
+				display: flex;
+				flex-direction: column;
+				margin: 0;
+				padding: 0;
+			}
+			#controls {
+				width: 100vw;
+				height: 40px;
+				border-bottom: 1px solid black;
+				padding: 20px;
+			}
+			#values-container {
+				padding: 20px;
+				height: 100vh;
+				display: flex;
+				flex-wrap: wrap;
+				background-color: #f7f7f7;
+			}
+			.culture-value {
+				padding: 20px;
+				border: 5px solid #f7f7f7;
+				margin: auto;
+				cursor: pointer;
+				background-color: #d3d3d3;
+				border-radius: 10px;
+				user-select: none;
+				-webkit-user-select: none;
+			}
+		</style>
+	</head>
+	<body>
+		<div id='controls'>
+			<input id='newValue' /><button onclick='addValue()'>Add new value</button>
+		</div>
+
+		<div id='values-container'>
+			<% @values.each do |value| %>
+				<div class='culture-value' style='font-size: <%= 10 + (value.votes * 5) %>px;'>
+					<%= value.name %>		
+				</div>
+			<% end %>
+		</div>
+
+	</body>
+
+	<script>
+		var serverUrl = 'http://localhost:4567'
+		var values = document.getElementsByClassName('culture-value')
+
+		function addValue() {
+			newName = document.getElementById('newValue').value
+			if (!newName) { return } // don't add an empty value
+
+			// add value to document
+			var newValue = document.createElement('div')
+			newValue.appendChild(document.createTextNode(newName))
+			newValue.className = 'culture-value'
+			newValue.style.fontSize = '15px'
+			document.getElementById('values-container').appendChild(newValue)
+
+			// register value with the server
+			var payload = JSON.stringify({name: newName})
+		    fetch(serverUrl + '/values', {
+		      method: "POST",
+		      body: payload,
+		      mode: 'no-cors'
+	    })
+
+		  //add a listener
+			newValue.addEventListener('click', growValueListener(newValue))
+
+			// clear text box
+			document.getElementById('newValue').value = ''
+		}
+
+		function addListeners() {		
+			Array.prototype.forEach.call(values, function(value) {
+				value.addEventListener('click', growValueListener(value))
+				value.addEventListener('contextmenu', shrinkValueListener(value), false)
+			})
+		}
+
+		// build a listener function for a value
+		function growValueListener(value) {
+			return function(e) {
+					// haha what the fuck
+					value.style.fontSize = parseInt(value.style.fontSize.slice(0,-2)) + 5 + 'px'
+
+					var payload = JSON.stringify({name: value.innerText})
+			    fetch(serverUrl + '/values/grow', {
+			      method: "POST",
+			      body: payload,
+			      mode: 'no-cors'
+			    })
+				}
+		}
+
+		function shrinkValueListener(value) {
+			return function(e) {
+					// haha what the fuck
+					e.preventDefault()
+					value.style.fontSize = parseInt(value.style.fontSize.slice(0,-2)) - 5 + 'px'
+
+					var payload = JSON.stringify({name: value.innerText})
+			    fetch(serverUrl + '/values/shrink', {
+			      method: "POST",
+			      body: payload,
+			      mode: 'no-cors'
+			    })
+			    return false
+				}
+		}
+
+		addListeners()
+	</script>
+</html>
