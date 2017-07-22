@@ -8,12 +8,29 @@
 				margin: 0;
 				padding: 0;
 			}
+
 			#controls {
 				width: 100vw;
 				height: 40px;
 				border-bottom: 1px solid black;
 				padding: 20px;
+				display: flex;
 			}
+
+			#controls > .new-value {
+				height: 40px;
+			}
+
+			#controls > .home-link {
+				margin-left: auto;
+				margin-right: 5%;
+			}
+
+			#controls > #wallLink {
+				margin-left: auto;
+				margin-right: auto;
+			}
+
 			#values-container {
 				padding: 20px;
 				height: 100vh;
@@ -21,6 +38,7 @@
 				flex-wrap: wrap;
 				background-color: #f7f7f7;
 			}
+
 			.culture-value {
 				padding: 20px;
 				border: 5px solid #f7f7f7;
@@ -35,7 +53,11 @@
 	</head>
 	<body>
 		<div id='controls'>
-			<input id='newValue' /><button onclick='addValue()'>Add new value</button>
+			<div class='new-value'>
+				<input id='newValue' /><button onclick='addValue()'>Add new value</button>
+			</div>
+			<div id='wallLink'></div>
+			<a class='home-link' href='/'><button>Culture Wall</button></a>
 		</div>
 
 		<div id='values-container'>
@@ -49,8 +71,15 @@
 	</body>
 
 	<script>
-		var serverUrl = 'http://localhost:4567'
+		var serverUrl = window.location.href
 		var values = document.getElementsByClassName('culture-value')
+		
+		if (serverUrl.indexOf('/walls/demo') > 0) {
+			document.getElementById('wallLink').innerHTML = "You are viewing a demo wall. Values you add and votes you make will not be saved."
+		} else {
+			document.getElementById('wallLink').innerHTML = "Copy your unique link to this wall: " + "<a href='" + serverUrl + "'>" + serverUrl + "</a>"
+		}
+
 
 		function addValue() {
 			newName = document.getElementById('newValue').value
@@ -65,7 +94,7 @@
 
 			// register value with the server
 			var payload = JSON.stringify({name: newName})
-		    fetch(serverUrl + '/values', {
+		    fetch(serverUrl + '/values/grow', {
 		      method: "POST",
 		      body: payload,
 		      mode: 'no-cors'
