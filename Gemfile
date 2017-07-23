@@ -2,6 +2,14 @@
 source "https://rubygems.org"
 
 gem "sinatra"
-gem "sqlite3"
 gem "activerecord"
-gem 'byebug'
+
+group :development do
+	gem 'sqlite3'
+	gem 'byebug'
+	gem 'tux'
+end
+
+group :production do
+	gem 'pg'	
+end

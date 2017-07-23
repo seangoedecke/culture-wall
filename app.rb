@@ -3,6 +3,7 @@ require 'active_record'
 require 'byebug'
 require 'digest/sha1'
 require_relative 'db_setup'
+require_relative 'config/environments'
 # require_relative 'models'
 
 class Value < ActiveRecord::Base
