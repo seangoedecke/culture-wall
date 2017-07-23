@@ -1,7 +1,8 @@
-ActiveRecord::Base.establish_connection(
-  :adapter  => 'sqlite3',
-  :database => 'database.db'
-)
+# ActiveRecord::Base.establish_connection(
+#   :adapter  => 'postgresql',
+#   :database => 'prod_db'
+# )	
+ActiveRecord::Base.establish_connection(ENV['DATABASE_URL'] || 'postgres://localhost/mydb')
 
 ActiveRecord::Schema.define do
   unless ActiveRecord::Base.connection.tables.include? 'values'
