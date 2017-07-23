@@ -1,114 +1,20 @@
 <html>
 	<head>
 		<title>Culture Wall</title>
-		<style>
-			body {
-				display: flex;
-				flex-direction: column;
-				margin: 0;
-				padding: 0;
-			}
-
-			a {
-				color: #219653;
-			}
-
-			.new-value > input {
-				height: 30px;
-				border-radius: 5px;
-				border: 1px solid #6b6b6b;
-				background-color: #f7f7f7;
-			}
-
-			.new-value > input:focus {
-				height: 30px;
-				width: 300px;
-				border-radius: 5px;
-				border: 1px solid #6b6b6b;
-				background-color: #f7f7f7;
-			}
-
-			.new-value > button {
-				margin-left: 10px;
-				height: 30px;
-				border-radius: 5px;
-				border: 1px solid #6b6b6b;
-				cursor: pointer;
-				background-color: #219653;
-				color: white;
-			}
-
-			#controls {
-				width: 100vw;
-				height: 23px;
-				border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-				padding: 20px;
-				display: flex;
-			}
-
-			#controls > .new-value {
-				height: 20px;
-			}
-
-			#controls > .home-link {
-				margin-left: auto;
-				margin-right: 5%;
-			}
-
-			#controls > #wallLink {
-				margin-left: auto;
-				margin-right: auto;
-				color: #6b6b6b;
-			}
-
-			#values-container {
-				padding: 20px;
-				height: 100vh;
-				display: flex;
-				flex-wrap: wrap;
-				background-color: #f7f7f7;
-			}
-
-			.culture-value {
-				padding: 20px;
-				border: 5px solid #f7f7f7;
-				margin: auto;
-				cursor: pointer;
-				background-color: white;
-				color: #219653;
-				border-radius: 10px;
-				user-select: none;
-				-webkit-user-select: none;
-			}
-
-			#bottomBar {
-				width: 100vw;
-				height: 40px;
-				border-top: 1px solid rgba(0, 0, 0, 0.1);
-				display: flex;
-				position: fixed;
-				bottom: 0;
-				background-color: white;
-			}
-
-			#bottomBar > span {
-				margin: auto;
-				color: #6b6b6b;
-			}
-
-			#logoIcon {
-				height: 25px;
-				width: 25px;
-			}
-		</style>
+		 <link href="/wall-style.css" rel="stylesheet" type="text/css" />
 	</head>
 	<body>
 		<div id='controls'>
+			<a class='home-link' href='/'><img id='logoIcon' src='/icon.svg' /> <span>Culture Wall</span></a>
+			<div id='wallLink'></div>
 			<div class='new-value'>
 				<input id='newValue' onkeypress="submitWrapper(event)" /><button onclick='addValue()'>Add new value</button>
 			</div>
-			<div id='wallLink'></div>
-			<a class='home-link' href='/'><img id='logoIcon' src='/icon.svg' /></a>
+		</div>
+		
+		<div id='bottomBar' onclick='hideBottomBar()'>
+			<span>Click on a value to vote it up, or right-click to vote it down. You may vote as many times as you want.</span>
+			<img src='/close.svg' />
 		</div>
 
 		<div id='values-container'>
@@ -119,101 +25,7 @@
 			<% end %>
 		</div>
 
-		<div id='bottomBar'>
-			<span>Click on a value to vote it up, or right-click to vote it down. You may vote as many times as you want.</span>
-		</div>
-
+		<script type='application/javascript' src='/wall.js'></script>
 	</body>
 
-	<script>
-		var serverUrl = window.location.href
-		var values = document.getElementsByClassName('culture-value')
-		var isPaidWall = '<%= @is_paid_wall %>'
-		
-		if (serverUrl.indexOf('/walls/demo') > 0) {
-			document.getElementById('wallLink').innerHTML = "You are viewing a demo wall. Values you add and votes you make will not be saved."
-		} else {
-			document.getElementById('wallLink').innerHTML = "Copy your unique link to this wall: " + "<a href='" + serverUrl + "'>" + serverUrl + "</a>"
-		}
-
-		// wraps addValue to only run when Enter is pressed
-		function submitWrapper(e) {
-			if (e.keyCode==13){
-				addValue()
-			}
-		}
-
-		function addValue() {
-
-			// for a free wall, don't add more than three values
-			if (!isPaidWall && document.getElementsByClassName('culture-value').length >= 3) {
-				alert("You will need to purchase a premium wall to add more than three values.")
-				return
-			}
-
-			newName = document.getElementById('newValue').value
-			if (!newName) { return } // don't add an empty value
-
-			// add value to document
-			var newValue = document.createElement('div')
-			newValue.appendChild(document.createTextNode(newName))
-			newValue.className = 'culture-value'
-			newValue.style.fontSize = '15px'
-			document.getElementById('values-container').appendChild(newValue)
-
-			// register value with the server
-			var payload = JSON.stringify({name: newName})
-		    fetch(serverUrl + '/values/grow', {
-		      method: "POST",
-		      body: payload,
-		      mode: 'no-cors'
-	    })
-
-		  //add a listener
-			newValue.addEventListener('click', growValueListener(newValue))
-
-			// clear text box
-			document.getElementById('newValue').value = ''
-		}
-
-		function addListeners() {		
-			Array.prototype.forEach.call(values, function(value) {
-				value.addEventListener('click', growValueListener(value))
-				value.addEventListener('contextmenu', shrinkValueListener(value), false)
-			})
-		}
-
-		// build a listener function for a value
-		function growValueListener(value) {
-			return function(e) {
-					// haha what the fuck
-					value.style.fontSize = parseInt(value.style.fontSize.slice(0,-2)) + 5 + 'px'
-
-					var payload = JSON.stringify({name: value.innerText})
-			    fetch(serverUrl + '/values/grow', {
-			      method: "POST",
-			      body: payload,
-			      mode: 'no-cors'
-			    })
-				}
-		}
-
-		function shrinkValueListener(value) {
-			return function(e) {
-					// haha what the fuck
-					e.preventDefault()
-					value.style.fontSize = parseInt(value.style.fontSize.slice(0,-2)) - 5 + 'px'
-
-					var payload = JSON.stringify({name: value.innerText})
-			    fetch(serverUrl + '/values/shrink', {
-			      method: "POST",
-			      body: payload,
-			      mode: 'no-cors'
-			    })
-			    return false
-				}
-		}
-
-		addListeners()
-	</script>
 </html>
