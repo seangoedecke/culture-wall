@@ -16,6 +16,7 @@ ActiveRecord::Schema.define do
     create_table :walls do |table|
       table.column :name, :string
       table.column :unique_hash_id, :string
+      table.column :is_paid, :boolean, default: false
     end
   end
 end
