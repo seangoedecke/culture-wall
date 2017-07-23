@@ -4,6 +4,10 @@ function hideBottomBar() {
 	document.getElementById('bottomBar').style.display = 'none'
 }
 
+function hideCopyLinkBar() {
+	document.getElementById('copyLinkBar').style.display = 'none'
+}
+
 
 // core wall code
 var serverUrl = window.location.href

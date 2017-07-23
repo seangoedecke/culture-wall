@@ -27,6 +27,19 @@
 					</button>
 				</a>
 			</div>
+			<% if @recent_wall %>
+				<div id='currentWall' class='closeable-bar' onclick='hideCurrentWall()'>
+					<span>
+						Your most recent wall: <a href='/walls/<%= @recent_wall %>'><%= @recent_wall %></a>
+					</span>
+					<img src='/close.svg' />
+				</div>
+			<% end %>
 		</div>
+		<script>
+			function hideCurrentWall() {
+				document.getElementById('currentWall').style.display = 'none'
+			}
+		</script>
 	</body>
 </html>

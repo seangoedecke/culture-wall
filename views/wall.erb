@@ -6,13 +6,17 @@
 	<body>
 		<div id='controls'>
 			<a class='home-link' href='/'><img id='logoIcon' src='/icon.svg' /> <span>Culture Wall</span></a>
-			<div id='wallLink'></div>
 			<div class='new-value'>
 				<input id='newValue' onkeypress="submitWrapper(event)" /><button onclick='addValue()'>Add new value</button>
 			</div>
 		</div>
-		
-		<div id='bottomBar' onclick='hideBottomBar()'>
+
+		<div id='copyLinkBar' class='closeable-bar' onclick='hideCopyLinkBar()'>
+			<span id='wallLink'></span>
+			<img src='/close.svg' />
+		</div>
+
+		<div id='bottomBar' class='closeable-bar' onclick='hideBottomBar()'>
 			<span>Click on a value to vote it up, or right-click to vote it down. You may vote as many times as you want.</span>
 			<img src='/close.svg' />
 		</div>

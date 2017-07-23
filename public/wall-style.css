@@ -12,6 +12,7 @@ a {
 
 .new-value > input {
 	height: 30px;
+	width: 300px;
 	border-radius: 5px;
 	border: 1px solid #6b6b6b;
 	background-color: #f7f7f7;
@@ -19,7 +20,7 @@ a {
 
 .new-value > input:focus {
 	height: 30px;
-	width: 250px;
+	width: 400px;
 	border-radius: 5px;
 	border: 1px solid #6b6b6b;
 	background-color: #f7f7f7;
@@ -91,7 +92,7 @@ a.home-link {
 	background-color: white;
 }
 
-#bottomBar {
+.closeable-bar {
 	width: 100vw;
 	height: 40px;
 	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
@@ -100,16 +101,16 @@ a.home-link {
 	cursor: pointer;
 }
 
-#bottomBar:hover {
+.closeable-bar:hover {
 	background-color: #f7f7f7;
 }
 
-#bottomBar > span {
+.closeable-bar > span {
 	margin: auto;
 	color: #6b6b6b;
 }
 
-#bottomBar > img {
+.closeable-bar > img {
 	margin-right: 2%;
 	margin-top: auto;
 	margin-bottom: auto;

@@ -89,3 +89,31 @@ button {
 	border-radius: 5px;
 	font-size: 1em;
 }
+
+.closeable-bar {
+	width: 100vw;
+	height: 40px;
+	border-top: 1px solid rgba(0, 0, 0, 0.1);
+	display: flex;
+	background-color: white;
+	cursor: pointer;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+}
+
+.closeable-bar:hover {
+	background-color: #f7f7f7;
+}
+
+.closeable-bar > span {
+	margin: auto;
+	color: #6b6b6b;
+}
+
+.closeable-bar > img {
+	margin-right: 2%;
+	margin-top: auto;
+	margin-bottom: auto;
+	height: 8px;
+}

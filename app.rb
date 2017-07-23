@@ -4,6 +4,7 @@ require 'digest/sha1'
 require_relative 'db_setup'
 require_relative 'config/environments'
 # require_relative 'models'
+enable :sessions
 
 class Value < ActiveRecord::Base
 	belongs_to :wall
@@ -20,7 +21,7 @@ class Wall < ActiveRecord::Base
 	end
 end
 
-# seed demo wall
+# seed demo wall if needed
 
 demo_wall = Wall.find_by(unique_hash_id: 'demo')
 if demo_wall.nil?
@@ -32,6 +33,7 @@ end
 
 # index route
 get '/' do
+	@recent_wall = session[:recent_wall]
 	erb :index
 end
 
@@ -40,7 +42,9 @@ get '/payment' do
 end
 
 get '/walls/new' do
-	wall = Wall.create(unique_hash_id: Digest::SHA1.hexdigest(Time.now.to_s))
+	hash_id = Digest::SHA1.hexdigest(Time.now.to_s)
+	wall = Wall.create(unique_hash_id: hash_id)
+	session[:recent_wall] = hash_id
 	redirect '/walls/' + wall.unique_hash_id
 end
 
