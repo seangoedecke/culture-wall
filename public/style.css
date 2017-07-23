@@ -5,6 +5,10 @@ html {
 	background-color: #f7f7f7;
 }
 
+body {
+	margin: 0;
+}
+
 body, #content {
 	display: flex;
 	flex-direction: column;
@@ -29,6 +33,7 @@ body, #content {
 	flex-direction: column;
 	margin-left: auto;
 	margin-right: auto;
+	height: 60%;
 }
 
 .nav-section > a {
@@ -44,7 +49,7 @@ body, #content {
 .payment-option {
 	width: 300px;
 	background-color: #f7f7f7;
-	border: 1px solid black;
+	border: 1px solid #219653;
 	border-radius: 5px;
 	padding: 10px;
 	margin-bottom: 15px;
@@ -64,6 +69,7 @@ button, a {
 	width: 175px;
 	height: 60px;
 	cursor: pointer;
+	margin: auto;
 }
 
 img {
@@ -72,8 +78,13 @@ img {
 	padding-left: 10px;
 }
 
+a {
+	color: #219653;
+}
+
 button {
-	background-color: #f7f7f7;
+	background-color: #219653;
+	color: white;
 	border: 1px solid black;
 	border-radius: 5px;
 	font-size: 1em;

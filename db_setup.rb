@@ -1,7 +1,10 @@
+# Only for dev:
 # ActiveRecord::Base.establish_connection(
-#   :adapter  => 'postgresql',
-#   :database => 'prod_db'
+#   :adapter  => 'sqlite3',
+#   :database => 'database.db'
 # )	
+
+
 ActiveRecord::Base.establish_connection(ENV['DATABASE_URL'] || 'postgres://localhost/mydb')
 
 ActiveRecord::Schema.define do
