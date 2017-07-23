@@ -29,6 +29,10 @@
 			<% end %>
 		</div>
 
+		<script>
+			// set up isPaidWall variable while we can still do erb templating
+			var isPaidWall = '<%= @is_paid_wall %>'
+		</script>
 		<script type='application/javascript' src='/wall.js'></script>
 	</body>
 

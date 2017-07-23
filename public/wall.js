@@ -12,7 +12,6 @@ function hideCopyLinkBar() {
 // core wall code
 var serverUrl = window.location.href
 var values = document.getElementsByClassName('culture-value')
-var isPaidWall = '<%= @is_paid_wall %>'
 
 if (serverUrl.indexOf('/walls/demo') > 0) {
 	document.getElementById('wallLink').innerHTML = "You are viewing a demo wall. Values you add and votes you make will not be saved."

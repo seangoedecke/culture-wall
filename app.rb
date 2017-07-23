@@ -8,17 +8,17 @@ enable :sessions
 
 class Value < ActiveRecord::Base
 	belongs_to :wall
+	before_save :validate_num_values
+
+	def validate_num_values
+		if !wall.is_paid && wall.values.count >= 5
+			throw :abort
+		end
+	end
 end
 
 class Wall < ActiveRecord::Base
 	has_many :values
-	before_save :validate_num_values
-
-	def validate_num_values
-		if !is_paid && values.count > 5
-			throw :abort
-		end
-	end
 end
 
 # seed demo wall if needed
